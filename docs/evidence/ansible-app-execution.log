@@ -1,0 +1,16 @@
+PLAY [Configure TravelMemory application server]
+
+TASK [Gathering Facts]
+ok: [localhost]
+
+TASK [Install Nginx]
+ok: [localhost]
+
+TASK [Enable Nginx]
+ok: [localhost]
+
+TASK [Enable TravelMemory backend]
+ok: [localhost]
+
+PLAY RECAP
+localhost : ok=4 changed=0 unreachable=0 failed=0 skipped=0 rescued=0 ignored=0

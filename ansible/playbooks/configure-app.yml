@@ -4,12 +4,9 @@
   become: true
 
   tasks:
-    - name: Install Node.js and Nginx
+    - name: Install Nginx
       ansible.builtin.apt:
-        name:
-          - nodejs
-          - npm
-          - nginx
+        name: nginx
         state: present
         update_cache: true
 
