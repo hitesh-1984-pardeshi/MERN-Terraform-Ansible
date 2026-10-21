@@ -1,38 +1,110 @@
-# MERN Application Deployment using Terraform and Ansible
+﻿# MERN Application Deployment Using Terraform and Ansible
 
-## Objective
-Deploy the TravelMemory MERN application on AWS using Terraform for infrastructure provisioning and Ansible for configuration management.
+## 1. Project Objective
 
-## Technologies
-AWS EC2, VPC, public and private subnets, Internet Gateway, NAT Gateway, security groups, Terraform, Ansible, Ubuntu, Node.js, Express.js, React, MongoDB, Nginx and GitHub.
+The objective of this project is to deploy a MERN application on AWS using Terraform for infrastructure provisioning and Ansible for configuration management.
 
-## Infrastructure
-AWS region: us-east-1
-VPC CIDR: 10.0.0.0/16
-Public subnet: 10.0.1.0/24
-Private subnet: 10.0.2.0/24
+## 2. Technology Stack
 
-The application server runs in the public subnet, while the database server runs in the private subnet. Network access is controlled through AWS security groups.
+- AWS EC2
+- Terraform
+- Ansible
+- Ubuntu Linux
+- MongoDB
+- Express.js and Node.js
+- React.js
+- Nginx
+- Git and GitHub
 
-## Application Architecture
-Nginx serves the React frontend and proxies API requests to the Express backend on port 3001. The backend connects to MongoDB on the private database server using environment-based configuration.
+## 3. Infrastructure Architecture
 
-## Terraform
-The terraform directory contains the configuration for AWS networking, security groups, EC2 instances and related infrastructure.
+The AWS infrastructure was provisioned using Terraform in the `us-east-1` region.
 
-## Ansible
-The ansible directory contains the inventory and playbooks for application and database configuration.
+The infrastructure includes:
 
-The application playbook was executed on the application EC2 instance. The run completed successfully with 4 successful tasks, 0 failed tasks and 0 unreachable hosts. The database playbook is included in the repository, but its execution has not yet been verified.
+- A Virtual Private Cloud (VPC) with CIDR `10.0.0.0/16`
+- A public subnet with CIDR `10.0.1.0/24` for the application server
+- A private subnet with CIDR `10.0.2.0/24` for the database server
+- An Internet Gateway for public internet connectivity
+- A NAT Gateway to support outbound connectivity from the private subnet
+- Route tables and security groups
+- An EC2 application server and a separate EC2 database server
 
-## Deployment Status
-The TravelMemory website was verified at http://44.203.10.48. The Express backend runs as a systemd service. MongoDB is configured on the private database server.
+The application server is publicly accessible, while the database server is placed in the private subnet.
 
-## Evidence
-An Ansible application-playbook execution record is stored in docs/evidence/ansible-app-execution.log. The repository also includes a screenshot of the working website.
+## 4. Application Deployment
 
-## Security
-The database server is placed in a private subnet. Credentials, private keys, Terraform state files and environment files must not be committed to the public repository.
+The TravelMemory MERN application was deployed on the application EC2 instance.
 
-## Conclusion
-This project demonstrates Terraform-based AWS infrastructure provisioning and deployment of a MERN application, with Ansible automation for application-server configuration.
+- React frontend served through Nginx
+- Nginx configured to proxy API requests to the Express backend
+- Express backend running as the `travelmemory-backend` systemd service on port `3001`
+- MongoDB hosted on the private database EC2 instance
+
+Application URL: http://44.203.10.48
+
+## 5. Terraform Implementation
+
+Terraform was used to define and provision the AWS infrastructure, including the VPC, subnets, network routing, security groups, and EC2 instances.
+
+Terraform configuration files are maintained in the `terraform/` directory.
+
+## 6. Ansible Configuration Management
+
+Ansible playbooks were executed from the application server to configure and verify the application and database servers.
+
+### Application server playbook
+
+Playbook: `ansible/playbooks/configure-app.yml`
+
+Tasks:
+- Install Nginx if required
+- Ensure Nginx is started and enabled
+- Ensure the TravelMemory backend service is started and enabled
+
+Execution result:
+
+- Successful playbook execution
+- `ok=4`
+- `changed=0`
+- `unreachable=0`
+- `failed=0`
+
+Evidence: `docs/evidence/ansible-app-execution.log`
+
+### Database server playbook
+
+Playbook: `ansible/playbooks/configure-db.yml`
+
+Tasks:
+- Ensure MongoDB is installed
+- Ensure the MongoDB service is started and enabled
+
+Execution result:
+
+- Successful playbook execution
+- `ok=3`
+- `changed=0`
+- `unreachable=0`
+- `failed=0`
+
+Evidence: `docs/evidence/ansible-db-execution.log`
+
+The zero-change results indicate that the required packages and services were already in the desired state when the playbooks were executed.
+
+## 7. Security Considerations
+
+- The database server is located in a private subnet.
+- Network access is controlled through AWS security groups.
+- Sensitive credentials, private keys, environment files, Terraform state files, and variable files containing secrets must not be committed to the public repository.
+- The application and database servers are separated into distinct instances.
+
+## 8. Evidence and Repository
+
+Ansible execution logs are maintained under `docs/evidence/`.
+
+Repository: https://github.com/hitesh-1984-pardeshi/MERN-Terraform-Ansible
+
+## 9. Conclusion
+
+The MERN application was deployed on AWS using Terraform-provisioned infrastructure. The application and database Ansible playbooks both executed successfully, with no failed or unreachable hosts. Execution evidence is included in the repository to support project review and assessment.
