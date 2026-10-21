@@ -1,0 +1,26 @@
+---
+- name: Configure TravelMemory application server
+  hosts: app
+  become: true
+
+  tasks:
+    - name: Install Node.js and Nginx
+      ansible.builtin.apt:
+        name:
+          - nodejs
+          - npm
+          - nginx
+        state: present
+        update_cache: true
+
+    - name: Enable Nginx
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
+
+    - name: Enable TravelMemory backend
+      ansible.builtin.service:
+        name: travelmemory-backend
+        state: started
+        enabled: true

@@ -1,0 +1,6 @@
+---
+- name: Configure TravelMemory application
+  ansible.builtin.import_playbook: configure-app.yml
+
+- name: Configure TravelMemory database
+  ansible.builtin.import_playbook: configure-db.yml

@@ -1,0 +1,17 @@
+---
+- name: Configure TravelMemory database server
+  hosts: db
+  become: true
+
+  tasks:
+    - name: Install MongoDB
+      ansible.builtin.apt:
+        name: mongodb-org
+        state: present
+        update_cache: true
+
+    - name: Enable MongoDB
+      ansible.builtin.service:
+        name: mongod
+        state: started
+        enabled: true
